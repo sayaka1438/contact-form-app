@@ -4,7 +4,7 @@
             <h1 class="text-2xl font-serif text-[#6b5744] text-center mb-10">Confirm</h1>
 
             <!-- 確認画面 -->
-            <form action="/contacts" method="post">
+            <form action="{{ route('contacts.store') }}" method="post">
                 @csrf
 
                 <!-- お名前 -->
@@ -130,8 +130,7 @@
                         class="px-16 py-3 bg-[#7d7470] hover:bg-[#6b5f57] border border-transparent rounded font-medium text-white transition">
                         送信
                     </button>
-                    <button type="button" onclick="history.back()"
-                        class="px-8 py-3 text-[#6b5744] transition">
+                    <button type="button" onclick="history.back()" class="px-8 py-3 text-[#6b5744] transition">
                         修正
                     </button>
                 </div>
