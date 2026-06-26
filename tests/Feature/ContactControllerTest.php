@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\Contact;
+use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Models\Category;
-use App\Models\Tag;
-use App\Models\Contact;
 
 class ContactControllerTest extends TestCase
 {
