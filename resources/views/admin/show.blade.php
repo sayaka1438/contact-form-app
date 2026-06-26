@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <form action="/logout" method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
             <button
                 class="px-5 py-1.5 border border-[#ddd8d3] text-[#c4bab0] bg-white rounded hover:bg-gray-50 transition lowercase text-sm">logout</button>
@@ -105,11 +105,11 @@
 
             <!-- アクションボタン -->
             <div class="flex justify-center gap-4 mt-8">
-                <a href="/admin"
+                <a href="{{ route('admin.contacts.index') }}"
                     class="px-8 py-3 bg-[#7d7470] hover:bg-[#6b5f57] border border-transparent rounded font-medium text-white transition">
                     一覧に戻る
                 </a>
-                <form action="{{ route('admin.destroy', $contact) }}" method="post">
+                <form action="{{ route('admin.contacts.destroy', $contact) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="submit"

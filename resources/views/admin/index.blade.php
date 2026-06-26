@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <form action="/logout" method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
             <button
                 class="px-5 py-1.5 border border-[#ddd8d3] text-[#c4bab0] bg-white rounded hover:bg-gray-50 transition lowercase text-sm">logout</button>
@@ -14,7 +14,8 @@
 
             <!-- 検索フォーム -->
             <div class="mb-4">
-                <form class="flex flex-wrap items-center gap-3" action="/admin" method="get">
+                <form class="flex flex-wrap items-center gap-3" action="{{ route('admin.contacts.index') }}"
+                    method="get">
                     <div class="flex-1 min-w-[200px]">
                         <input type="text" name="keyword" value="{{ request('keyword') }}"
                             placeholder="名前やメールアドレスを入力してください"
@@ -51,7 +52,7 @@
                         </button>
                     </div>
                     <div>
-                        <a href="/admin"
+                        <a href="{{ route('admin.contacts.index') }}"
                             class="px-6 py-2 bg-[#e8ddd2] text-[#9a938c] rounded hover:bg-[#ddd2c7] inline-block">
                             リセット
                         </a>
@@ -105,7 +106,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-sm">
-                                    <a href="{{ route('admin.show', $contact) }}"
+                                    <a href="{{ route('admin.contacts.show', $contact) }}"
                                         class="text-amber-600 hover:text-amber-800">詳細</a>
                                 </td>
                             </tr>
@@ -127,7 +128,7 @@
                     </div>
 
                     <!-- タグ追加フォーム -->
-                    <form action="/admin/tags" method="post" class="bg-[#f9f6f2] rounded px-4 py-4">
+                    <form action="{{ route('admin.tags.store') }}" method="post" class="bg-[#f9f6f2] rounded px-4 py-4">
                         @csrf
                         <label class="block text-sm text-[#6b5744] mb-2" for="tag-name-input">タグ名</label>
                         <input type="text" id="tag-name-input" name="name" placeholder="例: 新機能の要望"
@@ -157,11 +158,11 @@
                                             {{ $tag->name }}
                                         </td>
                                         <td class="px-6 py-3 text-sm text-right">
-                                            <a href="/admin/tags/{{ $tag->id }}/edit"
+                                            <a href="{{ route('admin.tags.edit', $tag) }}"
                                                 class="px-3 py-1 text-xs bg-[#7d7470] text-white rounded hover:bg-[#6b5f57] inline-block">
                                                 編集
                                             </a>
-                                            <form action="/admin/tags/{{ $tag->id }}" method="post" class="inline">
+                                            <form action="{{ route('admin.tags.destroy', $tag) }}" method="post" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"

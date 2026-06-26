@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
+use App\Http\Requests\IndexContactRequest;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Tag;
-use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index(Request $request)
+    public function index(IndexContactRequest $request)
     {
+        $validated = $request->validated();
+
         $query = Contact::with('category', 'tags');
 
-        $keyword = $request->input('keyword');
+        $keyword = $validated['keyword'] ?? null;
 
         if ($keyword) {
             $query->where(function ($query) use ($keyword) {
@@ -23,19 +25,19 @@ class AdminController extends Controller
             });
         }
 
-        $gender = $request->input('gender');
+        $gender = $validated['gender'] ?? null;
 
         if ($gender) {
             $query->where('gender', $gender);
         }
 
-        $categoryId = $request->input('category_id');
+        $categoryId = $validated['category_id'] ?? null;
 
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
 
-        $date = $request->input('date');
+        $date = $validated['date'] ?? null;
 
         if ($date) {
             $query->whereDate('created_at', $date);
@@ -60,6 +62,6 @@ class AdminController extends Controller
     {
         $contact->delete();
 
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.contacts.index');
     }
 }
