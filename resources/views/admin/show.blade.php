@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <form action="/logout" method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
             <button
                 class="px-5 py-1.5 border border-[#ddd8d3] text-[#c4bab0] bg-white rounded hover:bg-gray-50 transition lowercase text-sm">logout</button>
@@ -22,7 +22,7 @@
                         <span class="text-sm font-medium text-white">お名前</span>
                     </div>
                     <div class="col-span-2 bg-white px-6 py-4 flex items-center">
-                        <span class="text-[#6b5744]">{{ $contact->first_name }} {{ $contact->last_name }}</span>
+                        <span class="text-[#6b5744]">{{ $contact->last_name }} {{ $contact->first_name }}</span>
                     </div>
                 </div>
 
@@ -105,11 +105,11 @@
 
             <!-- アクションボタン -->
             <div class="flex justify-center gap-4 mt-8">
-                <a href="/admin"
+                <a href="{{ route('admin.contacts.index') }}"
                     class="px-8 py-3 bg-[#7d7470] hover:bg-[#6b5f57] border border-transparent rounded font-medium text-white transition">
                     一覧に戻る
                 </a>
-                <form action="/admin/contacts/{{ $contact->id }}" method="post">
+                <form action="{{ route('admin.contacts.destroy', $contact) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
