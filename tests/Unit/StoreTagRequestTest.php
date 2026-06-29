@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Http\Requests\StoreTagRequest;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Http\Requests\StoreTagRequest;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
@@ -21,7 +21,7 @@ class StoreTagRequestTest extends TestCase
 
         $validator = Validator::make(
             $data,
-            (new StoreTagRequest())->rules()
+            (new StoreTagRequest)->rules()
         );
 
         $this->assertTrue($validator->fails());
@@ -37,7 +37,7 @@ class StoreTagRequestTest extends TestCase
 
         $validator = Validator::make(
             $data,
-            (new StoreTagRequest())->rules()
+            (new StoreTagRequest)->rules()
         );
 
         $this->assertTrue($validator->fails());
@@ -57,7 +57,7 @@ class StoreTagRequestTest extends TestCase
 
         $validator = Validator::make(
             $data,
-            (new StoreTagRequest())->rules()
+            (new StoreTagRequest)->rules()
         );
 
         $this->assertTrue($validator->fails());
