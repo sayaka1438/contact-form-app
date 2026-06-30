@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Contact;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -115,5 +116,71 @@ class ContactControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('contact.thanks');
+    }
+
+    /** @test */
+    public function ログイン済み管理者はフィルタ条件付きで_cs_vをダウンロードできる(): void
+    {
+        $admin = User::factory()->create();
+        Category::factory()->create();
+
+        $male = Contact::factory()->create([
+            'gender' => 1,
+        ]);
+
+        $female = Contact::factory()->create([
+            'gender' => 2,
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->get(route('contacts.export', [
+                'gender' => 1,
+            ]));
+
+        $response->assertOk();
+        $response->assertHeader(
+            'content-disposition',
+            'attachment; filename=contacts.csv'
+        );
+
+        $content = $response->streamedContent();
+
+        $this->assertStringContainsString($male->email, $content);
+        $this->assertStringNotContainsString($female->email, $content);
+    }
+
+    /** @test */
+    public function ログイン済み管理者はフィルタ未指定で新着順の_cs_vをダウンロードできる(): void
+    {
+        $admin = User::factory()->create();
+        Category::factory()->create();
+
+        $old = Contact::factory()->create([
+            'email' => 'old@example.com',
+            'created_at' => '2025-06-30 10:00:00',
+        ]);
+
+        $new = Contact::factory()->create([
+            'email' => 'new@example.com',
+            'created_at' => '2026-06-30 10:00:00',
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('contacts.export'));
+
+        $response->assertOk();
+        $response->assertHeader(
+            'content-disposition',
+            'attachment; filename=contacts.csv'
+        );
+
+        $content = $response->streamedContent();
+
+        $this->assertStringContainsString($old->email, $content);
+        $this->assertStringContainsString($new->email, $content);
+
+        $this->assertLessThan(
+            strpos($content, $old->email),
+            strpos($content, $new->email)
+        );
     }
 }
