@@ -36,4 +36,24 @@ class StoreContactRequest extends FormRequest
             'tag_ids.*' => 'integer|exists:tags,id',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'first_name.required' => '姓を入力してください',
+            'last_name.required' => '名を入力してください',
+            'gender.required' => '性別を選択してください',
+            'gender.in' => '性別の値が不正です',
+            'email.required' => 'メールアドレスを入力してください',
+            'email.email' => 'メールアドレスはメール形式で入力してください',
+            'tel.required' => '電話番号を入力してください',
+            'tel.regex' => '電話番号はハイフンなしの10〜11桁で入力してください',
+            'address.required' => '住所を入力してください',
+            'category_id.required' => 'お問い合わせの種類を選択してください',
+            'category_id.exists' => '選択されたカテゴリーが存在しません',
+            'detail.required' => 'お問い合わせ内容を入力してください',
+            'detail.max' => 'お問い合わせ内容は120文字以内で入力してください',
+            'tag_ids.*.exists' => '選択されたタグが存在しません',
+        ];
+    }
 }
