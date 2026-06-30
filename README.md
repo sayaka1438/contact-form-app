@@ -1,66 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Contact Form App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+お問い合わせフォームアプリケーションです。
 
-## About Laravel
+## 概要
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+本アプリケーションは、お問い合わせの送信・管理を行うWebアプリケーションです。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 主な機能
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Webアプリケーション
 
-## Learning Laravel
+- お問い合わせ登録
+- 入力内容確認
+- サンクス画面
+- 管理画面
+- お問い合わせ検索
+- お問い合わせ詳細（モーダル表示）
+- お問い合わせ削除
+- CSVエクスポート
+- ログイン・ログアウト
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### API
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- お問い合わせ一覧取得
+- お問い合わせ詳細取得
+- お問い合わせ作成
+- お問い合わせ更新
+- お問い合わせ削除
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## ER図
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+![ER図](./er-diagram.png)
 
-### Premium Partners
+### ER図補足
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+`contact_tag` テーブルには複合ユニーク制約を設定しています。
 
-## Contributing
+```sql
+UNIQUE(contact_id, tag_id)
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+同じお問い合わせに同じタグが重複して登録されることを防ぐためです。
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 環境構築
 
-## Security Vulnerabilities
+### リポジトリをクローン
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/sayaka1438/contact-form-app.git
+```
 
-## License
+### プロジェクトへ移動
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+cd contact-form-app
+```
+
+### Composerパッケージをインストール
+
+```bash
+composer install
+```
+
+### 環境変数ファイルを作成
+
+```bash
+cp .env.example .env
+```
+
+### Dockerコンテナを起動
+
+```bash
+./vendor/bin/sail up -d
+```
+
+### アプリケーションキーを生成
+
+```bash
+./vendor/bin/sail artisan key:generate
+```
+
+### データベースのマイグレーション・シーディング
+
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
+
+### フロントエンド
+
+```bash
+./vendor/bin/sail npm install
+```
+
+```bash
+./vendor/bin/sail npm run dev
+```
+
+---
+
+## 使用技術
+
+- PHP 8.5.7
+- Laravel 10.50.2
+- MySQL 8.0
+- Nginx
+- Node.js 24.16.0
+- Docker
+- Laravel Sail
+- PHPUnit
+- Laravel Pint
+
+---
+
+## APIエンドポイント一覧
+
+| Method | URI                        | 概要                 |
+| ------ | -------------------------- | -------------------- |
+| GET    | /api/v1/contacts           | お問い合わせ一覧取得 |
+| GET    | /api/v1/contacts/{contact} | お問い合わせ詳細取得 |
+| POST   | /api/v1/contacts           | お問い合わせ作成     |
+| PUT    | /api/v1/contacts/{contact} | お問い合わせ更新     |
+| DELETE | /api/v1/contacts/{contact} | お問い合わせ削除     |
+
+---
+
+## 開発環境
+
+| 内容       | URL                   |
+| ---------- | --------------------- |
+| Web        | http://localhost      |
+| Vite       | http://localhost:5173 |
+| phpMyAdmin | http://localhost:8080 |
+
+---
+
+## テスト
+
+### 実施内容
+
+- Feature Test
+- Unit Test
+
+### 実行コマンド
+
+```bash
+./vendor/bin/sail test
+```
+
+```bash
+./vendor/bin/sail artisan test --coverage
+```
+
+### 結果
+
+- 全テスト成功
+- テストカバレッジ：77.0%
+
+---
+
+## 工夫した点
+
+- Feature Test・Unit Testを実装
+- API Resourceを使用してレスポンス形式を統一
+- APIのバリデーションメッセージを日本語化
+- CSVエクスポート機能を実装
+- GitHub Flowを用いて開発
+
+---
+
+## 補足
+
+Factoryで日本語のダミーデータを生成するため、`config/app.php` の `faker_locale` を変更しています。
+
+```php
+'faker_locale' => 'ja_JP',
+```
+
+---
+
+## GitHub Flowで開発
+
+### 開発フロー
+
+1. Issueを作成
+2. featureブランチを作成
+3. 実装
+4. テスト
+5. Pull Request作成
+6. レビュー後にmainへマージ
+
+### ブランチ例
+
+- feature/contact-form
+- feature/admin
+- feature/csv-export
+- feature/api
+- feature/api-test
+- docs/readme
+
+---
+
+## 作成者
+
+sayaka
