@@ -8,13 +8,15 @@ use App\Http\Requests\Api\V1\StoreContactRequest;
 use App\Http\Requests\Api\V1\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexContactRequest $request)
+    public function index(IndexContactRequest $request): AnonymousResourceCollection
     {
         $validated = $request->validated();
 
@@ -58,7 +60,7 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContactRequest $request)
+    public function store(StoreContactRequest $request): JsonResponse
     {
         $validated = $request->validated();
 
@@ -73,13 +75,13 @@ class ContactController extends Controller
 
         return (new ContactResource($contact))
             ->response()
-            ->setStatusCode('201');
+            ->setStatusCode(201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Contact $contact)
+    public function show(Contact $contact): ContactResource
     {
         $contact->load('category', 'tags');
 
@@ -89,7 +91,7 @@ class ContactController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateContactRequest $request, Contact $contact)
+    public function update(UpdateContactRequest $request, Contact $contact): ContactResource
     {
         $validated = $request->validated();
 
@@ -108,7 +110,7 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Contact $contact)
+    public function destroy(Contact $contact): JsonResponse
     {
         $contact->delete();
 
