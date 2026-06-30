@@ -58,7 +58,7 @@
                         </a>
                     </div>
                     <div>
-                        <a href="/contacts/export?{{ http_build_query(request()->query()) }}"
+                        <a href="{{ route('contacts.export', request()->query()) }}"
                             class="px-6 py-2 bg-amber-600 text-white rounded hover:bg-amber-700 inline-block">
                             エクスポート
                         </a>
