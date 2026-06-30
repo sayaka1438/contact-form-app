@@ -14,7 +14,7 @@ class AdminControllerTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function 未ログインユーザーは管理画面にアクセスできない(): void
+    public function 未認証ユーザーは管理画面にアクセスできない(): void
     {
         $response = $this->get(route('admin.contacts.index'));
 
